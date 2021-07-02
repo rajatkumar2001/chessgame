@@ -1,37 +1,37 @@
 #include <iostream>
 
-class CAPiece
+class MAPiece
 {
 public:
-	CAPiece(char cColor) : mcColor(cColor) {}
-	~CAPiece() {}
+	MAPiece(char cColor) : mcColor(cColor) {}
+	~MAPiece() {}
 	virtual char GetPiece() = 0;
 	char GetColor() {
 		return mcColor;
 	}
-	bool IsLegalMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
-		CAPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
+	bool IsLegalMove(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
+		MAPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
 		if ((qpDest == 0) || (mcColor != qpDest->GetColor())) {
 			return AreSquaresLegal(iSrcRow, iSrcCol, iDestRow, iDestCol, qpaaBoard);
 		}
 		return false;
 	}
 private:
-	virtual bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) = 0;
+	virtual bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) = 0;
 	char mcColor;
 };
 
-class CPawn : public CAPiece
+class MPawn : public MAPiece
 {
 public:
-	CPawn(char cColor) : CAPiece(cColor) {}
-	~CPawn() {}
+	MPawn(char cColor) : MAPiece(cColor) {}
+	~MPawn() {}
 private:
 	virtual char GetPiece() {
 		return 'P';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
-		CAPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
+		MAPiece* qpDest = qpaaBoard[iDestRow][iDestCol];
 		if (qpDest == 0) {
 			// Destination square is unoccupied
 			if (iSrcCol == iDestCol) {
@@ -63,16 +63,16 @@ private:
 	}
 };
 
-class CKnight : public CAPiece
+class MKnight : public MAPiece
 {
 public:
-	CKnight(char cColor) : CAPiece(cColor) {}
-	~CKnight() {}
+	MKnight(char cColor) : MAPiece(cColor) {}
+	~MKnight() {}
 private:
 	virtual char GetPiece() {
 		return 'N';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
 		// Destination square is unoccupied or occupied by opposite color
 		if ((iSrcCol == iDestCol + 1) || (iSrcCol == iDestCol - 1)) {
 			if ((iSrcRow == iDestRow + 2) || (iSrcRow == iDestRow - 2)) {
@@ -88,16 +88,16 @@ private:
 	}
 };
 
-class CBishop : public CAPiece
+class MBishop : public MAPiece
 {
 public:
-	CBishop(char cColor) : CAPiece(cColor) {}
-	~CBishop() {}
+	MBishop(char cColor) : MAPiece(cColor) {}
+	~MBishop() {}
 private:
 	virtual char GetPiece() {
 		return 'B';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
 		if ((iDestCol - iSrcCol == iDestRow - iSrcRow) || (iDestCol - iSrcCol == iSrcRow - iDestRow)) {
 			// Make sure that all invervening squares are empty
 			int iRowOffset = (iDestRow - iSrcRow > 0) ? 1 : -1;
@@ -118,16 +118,16 @@ private:
 	}
 };
 
-class CRook : public CAPiece
+class MRook : public MAPiece
 {
 public:
-	CRook(char cColor) : CAPiece(cColor) {}
-	~CRook() {}
+	MRook(char cColor) : MAPiece(cColor) {}
+	~MRook() {}
 private:
 	virtual char GetPiece() {
 		return 'R';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
 		if (iSrcRow == iDestRow) {
 			// Make sure that all invervening squares are empty
 			int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;
@@ -151,16 +151,16 @@ private:
 	}
 };
 
-class CQueen : public CAPiece
+class MQueen : public MAPiece
 {
 public:
-	CQueen(char cColor) : CAPiece(cColor) {}
-	~CQueen() {}
+	MQueen(char cColor) : MAPiece(cColor) {}
+	~MQueen() {}
 private:
 	virtual char GetPiece() {
 		return 'Q';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
 		if (iSrcRow == iDestRow) {
 			// Make sure that all invervening squares are empty
 			int iColOffset = (iDestCol - iSrcCol > 0) ? 1 : -1;
@@ -199,16 +199,16 @@ private:
 	}
 };
 
-class CKing : public CAPiece
+class MKing : public MAPiece
 {
 public:
-	CKing(char cColor) : CAPiece(cColor) {}
-	~CKing() {}
+	MKing(char cColor) : MAPiece(cColor) {}
+	~MKing() {}
 private:
 	virtual char GetPiece() {
 		return 'K';
 	}
-	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, CAPiece* qpaaBoard[8][8]) {
+	bool AreSquaresLegal(int iSrcRow, int iSrcCol, int iDestRow, int iDestCol, MAPiece* qpaaBoard[8][8]) {
 		int iRowDelta = iDestRow - iSrcRow;
 		int iColDelta = iDestCol - iSrcCol;
 		if (((iRowDelta >= -1) && (iRowDelta <= 1)) &&
@@ -220,10 +220,10 @@ private:
 	}
 };
 
-class CBoard
+class MBoard
 {
 public:
-	CBoard() {
+	MBoard() {
 		for (int iRow = 0; iRow < 8; ++iRow) {
 			for (int iCol = 0; iCol < 8; ++iCol) {
 				mqpaaBoard[iRow][iCol] = 0;
@@ -231,30 +231,30 @@ public:
 		}
 		// Allocate and place black pieces
 		for (int iCol = 0; iCol < 8; ++iCol) {
-			mqpaaBoard[6][iCol] = new CPawn('B');
+			mqpaaBoard[6][iCol] = new MPawn('B');
 		}
-		mqpaaBoard[7][0] = new CRook('B');
-		mqpaaBoard[7][1] = new CKnight('B');
-		mqpaaBoard[7][2] = new CBishop('B');
-		mqpaaBoard[7][3] = new CKing('B');
-		mqpaaBoard[7][4] = new CQueen('B');
-		mqpaaBoard[7][5] = new CBishop('B');
-		mqpaaBoard[7][6] = new CKnight('B');
-		mqpaaBoard[7][7] = new CRook('B');
+		mqpaaBoard[7][0] = new MRook('B');
+		mqpaaBoard[7][1] = new MKnight('B');
+		mqpaaBoard[7][2] = new MBishop('B');
+		mqpaaBoard[7][3] = new MKing('B');
+		mqpaaBoard[7][4] = new MQueen('B');
+		mqpaaBoard[7][5] = new MBishop('B');
+		mqpaaBoard[7][6] = new MKnight('B');
+		mqpaaBoard[7][7] = new MRook('B');
 		// Allocate and place white pieces
 		for (int iCol = 0; iCol < 8; ++iCol) {
-			mqpaaBoard[1][iCol] = new CPawn('W');
+			mqpaaBoard[1][iCol] = new MPawn('W');
 		}
-		mqpaaBoard[0][0] = new CRook('W');
-		mqpaaBoard[0][1] = new CKnight('W');
-		mqpaaBoard[0][2] = new CBishop('W');
-		mqpaaBoard[0][3] = new CKing('W');
-		mqpaaBoard[0][4] = new CQueen('W');
-		mqpaaBoard[0][5] = new CBishop('W');
-		mqpaaBoard[0][6] = new CKnight('W');
-		mqpaaBoard[0][7] = new CRook('W');
+		mqpaaBoard[0][0] = new MRook('W');
+		mqpaaBoard[0][1] = new MKnight('W');
+		mqpaaBoard[0][2] = new MBishop('W');
+		mqpaaBoard[0][3] = new MKing('W');
+		mqpaaBoard[0][4] = new MQueen('W');
+		mqpaaBoard[0][5] = new MBishop('W');
+		mqpaaBoard[0][6] = new MKnight('W');
+		mqpaaBoard[0][7] = new MRook('W');
 	}
-	~CBoard() {
+	~MBoard() {
 		for (int iRow = 0; iRow < 8; ++iRow) {
 			for (int iCol = 0; iCol < 8; ++iCol) {
 				delete mqpaaBoard[iRow][iCol];
@@ -359,7 +359,7 @@ public:
 							for (int iMoveCol = 0; iMoveCol < 8; ++iMoveCol) {
 								if (mqpaaBoard[iRow][iCol]->IsLegalMove(iRow, iCol, iMoveRow, iMoveCol, mqpaaBoard)) {
 									// Make move and check whether king is in check
-									CAPiece* qpTemp					= mqpaaBoard[iMoveRow][iMoveCol];
+									MAPiece* qpTemp					= mqpaaBoard[iMoveRow][iMoveCol];
 									mqpaaBoard[iMoveRow][iMoveCol]	= mqpaaBoard[iRow][iCol];
 									mqpaaBoard[iRow][iCol]			= 0;
 									bool bCanMove = !IsInCheck(cColor);
@@ -379,14 +379,14 @@ public:
 		return false;
 	}
 
-	CAPiece* mqpaaBoard[8][8];
+	MAPiece* mqpaaBoard[8][8];
 };
 
-class CChess
+class MChess
 {
 public:
-	CChess() : mcPlayerTurn('W') {}
-	~CChess() {}
+	MChess() : mcPlayerTurn('W') {}
+	~MChess() {}
 
 	void Start() {
 		do {
@@ -396,7 +396,7 @@ public:
 		mqGameBoard.Print();
 	}
 
-	void GetNextMove(CAPiece* qpaaBoard[8][8]) {
+	void GetNextMove(MAPiece* qpaaBoard[8][8]) {
 		using namespace std;
 		bool bValidMove		= false;
 		do {
@@ -422,13 +422,13 @@ public:
 				(iEndRow >= 0 && iEndRow <= 7) &&
 				(iEndCol >= 0 && iEndCol <= 7)) {
 				// Additional checks in here
-				CAPiece* qpCurrPiece = qpaaBoard[iStartRow][iStartCol];
+				MAPiece* qpCurrPiece = qpaaBoard[iStartRow][iStartCol];
 				// Check that the piece is the correct color
 				if ((qpCurrPiece != 0) && (qpCurrPiece->GetColor() == mcPlayerTurn)) {
 					// Check that the destination is a valid destination
 					if (qpCurrPiece->IsLegalMove(iStartRow, iStartCol, iEndRow, iEndCol, qpaaBoard)) {
 						// Make the move
-						CAPiece* qpTemp					= qpaaBoard[iEndRow][iEndCol];
+						MAPiece* qpTemp					= qpaaBoard[iEndRow][iEndCol];
 						qpaaBoard[iEndRow][iEndCol]		= qpaaBoard[iStartRow][iStartCol];
 						qpaaBoard[iStartRow][iStartCol]	= 0;
 						// Make sure that the current player is not in check
@@ -468,12 +468,12 @@ public:
 		return !bCanMove;
 	}
 private:
-	CBoard mqGameBoard;
+	MBoard mqGameBoard;
 	char mcPlayerTurn;
 };
 
 int main() {
-	CChess qGame;
+	MChess qGame;
 	qGame.Start();
 	return 0;
 }
